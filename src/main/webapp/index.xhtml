@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Sistema de Ventas</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <p:growl id="messages" showDetail="true" />
+
+    <!-- NUEVA ESTRUCTURA DE LAYOUT CON DIVS Y CSS -->
+    <div class="page-layout">
+        <!-- Cabecera -->
+        <div class="layout-north">
+            <h:outputText value="Mi Tienda de Alimentos" styleClass="title" />
+        </div>
+
+        <div class="layout-center-wrapper">
+            <!-- Menú Lateral -->
+            <div class="layout-west">
+                <h:form>
+                    <p:menu>
+                        <p:menuitem value="Productos" outcome="/index.xhtml" icon="pi pi-box"/>
+                        <p:menuitem value="Clientes" disabled="true" icon="pi pi-users"/>
+                        <p:menuitem value="Ventas" disabled="true" icon="pi pi-shopping-cart"/>
+                        <p:menuitem value="Reportes" disabled="true" icon="pi pi-chart-bar"/>
+                    </p:menu>
+                </h:form>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="layout-center">
+                <h:form id="form">
+                    <p:panel header="Gestión de Productos">
+                        <p:commandButton value="Nuevo Producto" icon="pi pi-plus"
+                                         actionListener="#{productoBean.prepararNuevo}"
+                                         oncomplete="PF('dialogoProducto').show()"
+                                         update=":dialogoForm"
+                                         styleClass="ui-button-success" style="margin-bottom: 20px;"/>
+
+                        <p:dataTable id="tablaProductos" var="prod" value="#{productoBean.productos}"
+                                     paginator="true" rows="10" emptyMessage="No se encontraron productos">
+
+                            <!-- ... El contenido de la tabla es el mismo ... -->
+                            <p:column headerText="ID" sortBy="#{prod.id}" style="width: 50px;">
+                                <h:outputText value="#{prod.id}"/>
+                            </p:column>
+                            <p:column headerText="Nombre" sortBy="#{prod.nombre}">
+                                <h:outputText value="#{prod.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Precio" sortBy="#{prod.precio}">
+                                <h:outputText value="#{prod.precio}">
+                                    <f:convertNumber type="currency" currencySymbol="$ "/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Stock" sortBy="#{prod.stock}">
+                                <h:outputText value="#{prod.stock}"/>
+                            </p:column>
+                            <p:column headerText="Acciones" style="width:100px; text-align: center">
+                                <p:commandButton icon="pi pi-pencil" title="Editar" process="@this"
+                                                 update=":dialogoForm" oncomplete="PF('dialogoProducto').show()">
+                                    <f:setPropertyActionListener value="#{prod}" target="#{productoBean.productoSeleccionado}"/>
+                                </p:commandButton>
+                                <p:commandButton icon="pi pi-trash" title="Eliminar" process="@this"
+                                                 actionListener="#{productoBean.eliminar(prod)}"
+                                                 update="tablaProductos :messages">
+                                    <p:confirm header="Confirmación" message="¿Estás seguro?" icon="pi pi-exclamation-triangle"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" />
+                    </p:confirmDialog>
+                </h:form>
+            </div>
+        </div>
+    </div>
+
+    <!-- El diálogo (ventana emergente) no cambia -->
+    <p:dialog header="Detalles del Producto" widgetVar="dialogoProducto" modal="true"
+              showEffect="fade" hideEffect="fade" resizable="false">
+        <!-- ... el contenido del diálogo sigue igual ... -->
+        <h:form id="dialogoForm">...</h:form>
+    </p:dialog>
+</h:body>
+</html>

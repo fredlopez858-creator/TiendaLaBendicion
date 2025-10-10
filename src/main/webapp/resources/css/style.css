@@ -1,0 +1,60 @@
+/* --- Estilos Generales --- */
+html {
+    height: 100%;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* --- NUEVA ESTRUCTURA DE LAYOUT CON FLEXBOX --- */
+.page-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Cabecera */
+.layout-north {
+    background-color: #1f2d40; /* Color oscuro del tema 'arya' */
+    color: #ffffff;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Evita que la cabecera se encoja */
+}
+.layout-north .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.layout-center-wrapper {
+    display: flex;
+    flex-grow: 1; /* Ocupa el resto del espacio vertical */
+    overflow: hidden; /* Evita barras de scroll dobles */
+}
+
+/* Menú Lateral */
+.layout-west {
+    width: 250px;
+    padding: 1rem;
+    background-color: var(--surface-b); /* Usa variables de color del tema de PrimeFaces */
+    border-right: 1px solid var(--surface-d);
+    flex-shrink: 0;
+    overflow-y: auto; /* Scroll si el menú es muy largo */
+}
+.layout-west .ui-menu {
+    border: none;
+    width: 100%;
+}
+
+/* Contenido Principal */
+.layout-center {
+    flex-grow: 1; /* Ocupa el resto del espacio horizontal */
+    padding: 1rem;
+    overflow-y: auto; /* Permite scroll solo en el área de contenido */
+}
