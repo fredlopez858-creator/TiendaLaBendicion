@@ -12,7 +12,7 @@
 <h:body>
     <p:growl id="messages" showDetail="true" />
 
-    <!-- NUEVA ESTRUCTURA DE LAYOUT CON DIVS Y CSS -->
+    <!-- Estructura de layout con DIVs y CSS -->
     <div class="page-layout">
         <!-- Cabecera -->
         <div class="layout-north">
@@ -45,7 +45,6 @@
                         <p:dataTable id="tablaProductos" var="prod" value="#{productoBean.productos}"
                                      paginator="true" rows="10" emptyMessage="No se encontraron productos">
 
-                            <!-- ... El contenido de la tabla es el mismo ... -->
                             <p:column headerText="ID" sortBy="#{prod.id}" style="width: 50px;">
                                 <h:outputText value="#{prod.id}"/>
                             </p:column>
@@ -83,11 +82,41 @@
         </div>
     </div>
 
-    <!-- El diálogo (ventana emergente) no cambia -->
+    <!-- ========= INICIO DEL DIÁLOGO CORREGIDO ========= -->
     <p:dialog header="Detalles del Producto" widgetVar="dialogoProducto" modal="true"
-              showEffect="fade" hideEffect="fade" resizable="false">
-        <!-- ... el contenido del diálogo sigue igual ... -->
-        <h:form id="dialogoForm">...</h:form>
+              showEffect="fade" hideEffect="fade" resizable="false" width="500">
+        <h:form id="dialogoForm">
+            <!-- Usamos un PanelGrid para organizar el formulario en una rejilla bonita -->
+            <p:panelGrid columns="2" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
+
+                <p:outputLabel for="nombre" value="Nombre del Producto:"/>
+                <p:inputText id="nombre" value="#{productoBean.productoSeleccionado.nombre}" required="true" requiredMessage="El nombre es obligatorio." style="width: 100%"/>
+
+                <p:outputLabel for="descripcion" value="Descripción:"/>
+                <p:inputTextarea id="descripcion" value="#{productoBean.productoSeleccionado.descripcion}" rows="3" style="width: 100%"/>
+
+                <p:outputLabel for="precio" value="Precio:"/>
+                <p:inputNumber id="precio" value="#{productoBean.productoSeleccionado.precio}" required="true" requiredMessage="El precio es obligatorio." decimalPlaces="2" symbol="$ "/>
+
+                <p:outputLabel for="stock" value="Unidades en Stock:"/>
+                <p:inputNumber id="stock" value="#{productoBean.productoSeleccionado.stock}" required="true" requiredMessage="El stock es obligatorio." decimalPlaces="0"/>
+
+                <f:facet name="footer">
+                    <div style="text-align: right; padding-top: 10px;">
+                        <p:commandButton value="Guardar" icon="pi pi-check"
+                                         actionListener="#{productoBean.guardar}"
+                                         update=":form:tablaProductos :messages"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialogoProducto').hide()"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times"
+                                         onclick="PF('dialogoProducto').hide()"
+                                         immediate="true" type="button" styleClass="ui-button-secondary"/>
+                    </div>
+                </f:facet>
+
+            </p:panelGrid>
+        </h:form>
     </p:dialog>
+
+
 </h:body>
 </html>
