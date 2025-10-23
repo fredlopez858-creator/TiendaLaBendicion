@@ -17,7 +17,6 @@
   </properties>
 
   <dependencies>
-    <!-- API de Jakarta EE (que en la versión 8 usa los paquetes javax.*) -->
     <dependency>
       <groupId>jakarta.platform</groupId>
       <artifactId>jakarta.jakartaee-api</artifactId>
@@ -25,15 +24,12 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- PrimeFaces (Versión compatible con javax.*) -->
     <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>11.0.0</version>
-      <!-- HEMOS ELIMINADO EL CLASIFICADOR "jakarta" -->
     </dependency>
 
-    <!-- Driver de SQL Server -->
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>

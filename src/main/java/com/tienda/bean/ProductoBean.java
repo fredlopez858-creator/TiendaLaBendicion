@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -25,35 +26,54 @@ public class ProductoBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.productos = em.createQuery("SELECT p FROM Producto p ORDER BY p.nombre", Producto.class).getResultList();
+        try {
+            this.productos = em.createQuery("SELECT p FROM Producto p ORDER BY p.nombre", Producto.class).getResultList();
+        } catch (Exception e) {
+            this.productos = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo cargar la lista de productos."));
+            e.printStackTrace();
+        }
         this.productoSeleccionado = new Producto();
     }
 
     @Transactional
     public void guardar() {
-        String summary;
-        if (this.productoSeleccionado.getId() == null) {
-            em.persist(this.productoSeleccionado);
-            summary = "Producto Creado";
-        } else {
-            em.merge(this.productoSeleccionado);
-            summary = "Producto Actualizado";
+        try {
+            String summary;
+            if (this.productoSeleccionado.getId() == null) {
+                em.persist(this.productoSeleccionado);
+                summary = "Producto Creado";
+            } else {
+                em.merge(this.productoSeleccionado);
+                summary = "Producto Actualizado";
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", summary));
+
+            init();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un problema al guardar el producto."));
+            e.printStackTrace();
         }
-
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", summary));
-
-        init();
     }
 
     @Transactional
     public void eliminar(Producto producto) {
-        em.remove(em.merge(producto));
+        try {
+            em.remove(em.merge(producto));
 
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Producto Eliminado"));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Producto Eliminado"));
 
-        init();
+            init();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un problema al eliminar el producto."));
+            e.printStackTrace();
+        }
     }
 
     public void prepararNuevo() {
