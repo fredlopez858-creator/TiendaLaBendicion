@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Sistema de Ventas - Reporte</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="page-layout">
+        <!-- Cabecera -->
+        <div class="layout-north">
+            <h:outputText value="Mi Tienda de Alimentos" styleClass="title" />
+        </div>
+
+        <div class="layout-center-wrapper">
+            <!-- Menú Lateral -->
+            <div class="layout-west">
+                <h:form>
+                    <p:menu>
+                        <p:menuitem value="Gestión de Productos" outcome="/index.xhtml" icon="pi pi-box"/>
+                        <p:menuitem value="Reporte Visual" outcome="/reportes.xhtml" icon="pi pi-chart-bar"/>
+                    </p:menu>
+                </h:form>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="layout-center">
+                <h:form id="formReportes">
+                    <p:panel header="Reporte Visual de Productos">
+                        <p:dataView var="prod" value="#{productoBean.productos}"
+                                    layout="grid" paginator="true" rows="9" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+
+                            <p:dataViewGridItem>
+                                <p:panel styleClass="product-card">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{prod.nombre}" styleClass="product-title"/>
+                                    </f:facet>
+
+                                    <div class="product-summary">
+                                        <div class="product-price">
+                                            <h:outputText value="#{prod.precio}">
+                                                <f:convertNumber type="currency" currencySymbol="Q "/>
+                                            </h:outputText>
+                                        </div>
+                                        <div class="product-stock">
+                                            <span>Stock: </span>
+                                            <h:outputText value="#{prod.stock}"/>
+                                        </div>
+                                    </div>
+
+                                    <p:commandButton value="Ver Detalles" icon="pi pi-search"
+                                                     oncomplete="PF('dialogoDetalle').show()"
+                                                     update=":dialogoDetalleForm">
+                                        <f:setPropertyActionListener value="#{prod}" target="#{productoBean.productoSeleccionado}"/>
+                                    </p:commandButton>
+                                </p:panel>
+                            </p:dataViewGridItem>
+
+                        </p:dataView>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+    </div>
+
+    <p:dialog header="Detalles del Producto" widgetVar="dialogoDetalle" modal="true"
+              showEffect="fade" hideEffect="fade" resizable="false" width="400">
+        <h:form id="dialogoDetalleForm">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                <h:outputText value="ID:" style="font-weight: bold;"/>
+                <h:outputText value="#{productoBean.productoSeleccionado.id}"/>
+
+                <h:outputText value="Nombre:" style="font-weight: bold;"/>
+                <h:outputText value="#{productoBean.productoSeleccionado.nombre}"/>
+
+                <h:outputText value="Descripción:" style="font-weight: bold;"/>
+                <h:outputText value="#{productoBean.productoSeleccionado.descripcion}"/>
+
+                <h:outputText value="Precio:" style="font-weight: bold;"/>
+                <h:outputText value="#{productoBean.productoSeleccionado.precio}">
+                    <f:convertNumber type="currency" currencySymbol="Q "/>
+                </h:outputText>
+
+                <h:outputText value="Stock:" style="font-weight: bold;"/>
+                <h:outputText value="#{productoBean.productoSeleccionado.stock}"/>
+            </p:panelGrid>
+            <div style="text-align: right; padding-top: 10px;">
+                <p:commandButton value="Cerrar" type="button" onclick="PF('dialogoDetalle').hide()" styleClass="ui-button-secondary"/>
+            </div>
+        </h:form>
+    </p:dialog>
+</h:body>
+</html>

@@ -1,4 +1,3 @@
-/* --- Estilos Generales --- */
 html {
     height: 100%;
 }
@@ -10,22 +9,20 @@ body {
     height: 100%;
 }
 
-/* --- NUEVA ESTRUCTURA DE LAYOUT CON FLEXBOX --- */
 .page-layout {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-/* Cabecera */
 .layout-north {
-    background-color: #1f2d40; /* Color oscuro del tema 'arya' */
+    background-color: #1f2d40;
     color: #ffffff;
     padding: 0 2rem;
     height: 60px;
     display: flex;
     align-items: center;
-    flex-shrink: 0; /* Evita que la cabecera se encoja */
+    flex-shrink: 0;
 }
 .layout-north .title {
     font-size: 1.5rem;
@@ -34,27 +31,63 @@ body {
 
 .layout-center-wrapper {
     display: flex;
-    flex-grow: 1; /* Ocupa el resto del espacio vertical */
-    overflow: hidden; /* Evita barras de scroll dobles */
+    flex-grow: 1;
+    overflow: hidden;
 }
 
-/* Menú Lateral */
 .layout-west {
     width: 250px;
     padding: 1rem;
-    background-color: var(--surface-b); /* Usa variables de color del tema de PrimeFaces */
+    background-color: var(--surface-a);
     border-right: 1px solid var(--surface-d);
     flex-shrink: 0;
-    overflow-y: auto; /* Scroll si el menú es muy largo */
+    overflow-y: auto;
 }
 .layout-west .ui-menu {
     border: none;
     width: 100%;
 }
 
-/* Contenido Principal */
 .layout-center {
-    flex-grow: 1; /* Ocupa el resto del espacio horizontal */
+    flex-grow: 1;
     padding: 1rem;
-    overflow-y: auto; /* Permite scroll solo en el área de contenido */
+    overflow-y: auto;
+}
+
+.product-card {
+    text-align: center;
+    margin: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.product-card .ui-panel-header {
+    background-color: var(--surface-c);
+    color: var(--text-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.product-card .product-title {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.product-card .product-summary {
+    padding: 15px 0;
+    font-size: 1.1em;
+}
+
+.product-card .product-price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #4CAF50; /* Verde para el precio */
+    margin-bottom: 10px;
+}
+
+.product-card .product-stock {
+    color: var(--text-color-secondary);
 }
