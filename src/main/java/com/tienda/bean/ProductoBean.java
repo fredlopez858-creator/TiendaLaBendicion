@@ -37,6 +37,7 @@ public class ProductoBean implements Serializable {
         this.productoSeleccionado = new Producto();
     }
 
+    //Se hicieron correxiones de prueba
     @Transactional
     public void guardar() {
         try {
