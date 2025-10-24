@@ -44,10 +44,10 @@ public class ProductoBean implements Serializable {
             String summary;
             if (this.productoSeleccionado.getId() == null) {
                 em.persist(this.productoSeleccionado);
-                summary = "Producto Creado";
+                summary = "Producto Creado correctamente";
             } else {
                 em.merge(this.productoSeleccionado);
-                summary = "Producto Actualizado";
+                summary = "Producto Actualizado correctamente";
             }
 
             FacesContext.getCurrentInstance().addMessage(null,
